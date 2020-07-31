@@ -33,7 +33,7 @@ class _TabCal extends State<TabCal> {
         events.forEach((event) => print(event.title));
       },
       showOnlyCurrentMonthDate: true,
-      weekendTextStyle: TextStyle(color: Colors.white),
+      weekendTextStyle: TextStyle(color: Colors.transparent),
       thisMonthDayBorderColor: Colors.brown,
       onCalendarChanged: (DateTime date) {
         this.setState(() {
@@ -50,9 +50,15 @@ class _TabCal extends State<TabCal> {
       selectedDateTime: _currentDate,
       targetDateTime: _targetDateTime,
       showIconBehindDayText: true,
-      markedDateIconBuilder: (event) {
+      markedDateWidget: Container(
+        decoration: new BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.red,
+            border: Border.all(color: Colors.transparent, width: 2.5)),
+      ),
+      /*markedDateIconBuilder: (event) {
         return event.icon;
-      },
+      },*/
       daysHaveCircularBorder: null,
       todayBorderColor: Colors.green,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -65,7 +71,7 @@ class _TabCal extends State<TabCal> {
       minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       maxSelectedDate: _currentDate.add(Duration(days: 360)),
       todayButtonColor: Colors.transparent,
-      markedDateShowIcon: true,
+      markedDateShowIcon: false,
       onDayLongPressed: (DateTime date) {
         add(date);
       },

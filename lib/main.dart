@@ -23,14 +23,13 @@ class _CourseDetailState extends State<CourseDetail> {
   String courseName = 'Digital Signal Processing';
   int leaveAllowed = 8;
   static var absent = 0;
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {},
-  );
+  EventList<Event> _markedDateMap = new EventList<Event>(events: {});
+  List<DateTime> markDate = new List<DateTime>();
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
         color: Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(1500)),
-        border: Border.all(color: Colors.transparent, width: 2.0)),
+        borderRadius: BorderRadius.all(Radius.circular(500.0)),
+        border: Border.all(color: Colors.transparent, width: 3.0)),
   );
 
   @override
@@ -59,23 +58,49 @@ class _CourseDetailState extends State<CourseDetail> {
                                 markedDatesMap: _markedDateMap,
                                 add: (DateTime date) {
                                   setState(() {
-                                    _markedDateMap.add(
-                                        date,
-                                        new Event(
-                                          date: date,
-                                          title: 'Eve $date',
-                                          icon: _eventIcon,
-                                        ));
-                                    absent++;
+                                    if (markDate.length == 0) {
+                                      absent++;
+                                      _markedDateMap.add(
+                                          date,
+                                          new Event(
+                                            date: date,
+                                            title: 'Eve $date',
+                                            icon: _eventIcon,
+                                          ));
+                                      markDate.add(date);
+                                    } else {
+                                      for (var i = 0;
+                                          i < markDate.length;
+                                          i++) {
+                                        if (date == markDate[i]) {
+                                          absent--;
+                                          _markedDateMap.remove(
+                                              date,
+                                              new Event(
+                                                date: date,
+                                                title: 'Eve $date',
+                                                icon: _eventIcon,
+                                              ));
+                                          markDate.remove(date);
+                                          continue;
+                                        }
+                                        if (date != markDate[i]) {
+                                          absent++;
+                                          _markedDateMap.add(
+                                              date,
+                                              Event(
+                                                date: date,
+                                                title: 'Eve $date',
+                                                icon: _eventIcon,
+                                              ));
+                                          markDate.add(date);
+                                          break;
+                                        }
+                                      }
+                                    }
                                   });
                                 },
                               )
-                              /*Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 1, horizontal: 16),
-                                  child: TabCal(
-                                    
-                                  ))*/
                             ]),
                       ),
                     ]),
