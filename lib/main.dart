@@ -69,33 +69,26 @@ class _CourseDetailState extends State<CourseDetail> {
                                           ));
                                       markDate.add(date);
                                     } else {
-                                      for (var i = 0;
-                                          i < markDate.length;
-                                          i++) {
-                                        if (date == markDate[i]) {
-                                          absent--;
-                                          _markedDateMap.remove(
-                                              date,
-                                              new Event(
-                                                date: date,
-                                                title: 'Eve $date',
-                                                icon: _eventIcon,
-                                              ));
-                                          markDate.remove(date);
-                                          continue;
-                                        }
-                                        if (date != markDate[i]) {
-                                          absent++;
-                                          _markedDateMap.add(
-                                              date,
-                                              Event(
-                                                date: date,
-                                                title: 'Eve $date',
-                                                icon: _eventIcon,
-                                              ));
-                                          markDate.add(date);
-                                          break;
-                                        }
+                                      if (markDate.contains(date)) {
+                                        absent--;
+                                        _markedDateMap.remove(
+                                            date,
+                                            new Event(
+                                              date: date,
+                                              title: 'Eve $date',
+                                              icon: _eventIcon,
+                                            ));
+                                        markDate.remove(date);
+                                      } else {
+                                        absent++;
+                                        _markedDateMap.add(
+                                            date,
+                                            Event(
+                                              date: date,
+                                              title: 'Eve $date',
+                                              icon: _eventIcon,
+                                            ));
+                                        markDate.add(date);
                                       }
                                     }
                                   });

@@ -54,7 +54,7 @@ class _TabCal extends State<TabCal> {
         decoration: new BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.red,
-            border: Border.all(color: Colors.transparent, width: 2.5)),
+            border: Border.all(color: Colors.transparent, width: 16.5)),
       ),
       /*markedDateIconBuilder: (event) {
         return event.icon;
