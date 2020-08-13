@@ -25,81 +25,90 @@ class _CourseDetailState extends State<CourseDetail> {
         borderRadius: BorderRadius.all(Radius.circular(500.0)),
         border: Border.all(color: Colors.transparent, width: 3.0)),
   );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              courseTitle(courseID, courseName),
-              leavesData(leaveAllowed, absent),
-              //SizedBox(height: 50,),
-              Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              TabCal(
-                                markedDatesMap: _markedDateMap,
-                                add: (DateTime date) {
-                                  setState(() {
-                                    if (markDate.length == 0) {
-                                      absent++;
-                                      _markedDateMap.add(
-                                          date,
-                                          new Event(
-                                            date: date,
-                                            title: 'Eve $date',
-                                            icon: _eventIcon,
-                                          ));
-                                      markDate.add(date);
-                                    } else {
-                                      if (markDate.contains(date)) {
-                                        absent--;
-                                        _markedDateMap.remove(
-                                            date,
-                                            new Event(
-                                              date: date,
-                                              title: 'Eve $date',
-                                              icon: _eventIcon,
-                                            ));
-                                        markDate.remove(date);
-                                      } else {
-                                        absent++;
-                                        _markedDateMap.add(
-                                            date,
-                                            Event(
-                                              date: date,
-                                              title: 'Eve $date',
-                                              icon: _eventIcon,
-                                            ));
-                                        markDate.add(date);
-                                      }
-                                    }
-                                  });
-                                },
-                              )
-                            ]),
-                      ),
-                    ]),
-              ),
-              //SizedBox(height: 300,),
-              Text(
-                'Long press a date to mark/unmark absent',
-                style: TextStyle(
-                  color: Colors.grey[600],
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(25.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: CourseTitle(courseID, courseName),
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  child: LeavesData(leaveAllowed, absent),
+                ),
+                //SizedBox(height: 50,),
+                Container(
+                  margin: EdgeInsets.only(top: 10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TabCal(
+                          markedDatesMap: _markedDateMap,
+                          add: (DateTime date) {
+                            setState(() {
+                              if (markDate.length == 0) {
+                                absent++;
+                                _markedDateMap.add(
+                                    date,
+                                    new Event(
+                                      date: date,
+                                      title: 'Eve $date',
+                                      icon: _eventIcon,
+                                    ));
+                                markDate.add(date);
+                              } else {
+                                if (markDate.contains(date)) {
+                                  absent--;
+                                  _markedDateMap.remove(
+                                      date,
+                                      new Event(
+                                        date: date,
+                                        title: 'Eve $date',
+                                        icon: _eventIcon,
+                                      ));
+                                  markDate.remove(date);
+                                } else {
+                                  absent++;
+                                  _markedDateMap.add(
+                                      date,
+                                      Event(
+                                        date: date,
+                                        title: 'Eve $date',
+                                        icon: _eventIcon,
+                                      ));
+                                  markDate.add(date);
+                                }
+                              }
+                            });
+                          },
+                        )
+                      ]),
+                ),
+                //SizedBox(height: 300,),
+                Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 40.0),
+                  child: Text(
+                    'Long press a date to mark/unmark absent',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

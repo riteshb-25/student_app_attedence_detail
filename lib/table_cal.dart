@@ -32,8 +32,10 @@ class _TabCal extends State<TabCal> {
         this.setState(() => _currentDate = date);
         events.forEach((event) => print(event.title));
       },
-      showOnlyCurrentMonthDate: true,
-      weekendTextStyle: TextStyle(color: Colors.transparent),
+      inactiveWeekendTextStyle: TextStyle(color: Colors.red),
+      //showOnlyCurrentMonthDate: true,
+      //markedDateWidget: ,
+      weekendTextStyle: TextStyle(color: Colors.black),
       thisMonthDayBorderColor: Colors.brown,
       onCalendarChanged: (DateTime date) {
         this.setState(() {
@@ -42,23 +44,19 @@ class _TabCal extends State<TabCal> {
         });
       },
       weekDayFormat: WeekdayFormat.short,
-      firstDayOfWeek: DateTime.monday,
-      showWeekDays: true,
+      firstDayOfWeek: DateTime.saturday,
+      staticSixWeekFormat: false,
+      showWeekDays: false,
+      showHeader: false,
       weekFormat: false,
       markedDatesMap: widget.markedDatesMap,
-      height: 420.0,
+      height: 300,
       selectedDateTime: _currentDate,
       targetDateTime: _targetDateTime,
       showIconBehindDayText: true,
-      markedDateWidget: Container(
-        decoration: new BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.red,
-            border: Border.all(color: Colors.transparent, width: 16.5)),
-      ),
-      /*markedDateIconBuilder: (event) {
+      markedDateIconBuilder: (event) {
         return event.icon;
-      },*/
+      },
       daysHaveCircularBorder: null,
       todayBorderColor: Colors.green,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -71,26 +69,92 @@ class _TabCal extends State<TabCal> {
       minSelectedDate: _currentDate.subtract(Duration(days: 360)),
       maxSelectedDate: _currentDate.add(Duration(days: 360)),
       todayButtonColor: Colors.transparent,
-      markedDateShowIcon: false,
+      markedDateShowIcon: true,
       onDayLongPressed: (DateTime date) {
         add(date);
       },
     );
 
-    return Column(
-      children: <Widget>[
-        Container(
-            margin: EdgeInsets.only(
-              top: 30.0,
-              bottom: 16.0,
-              left: 16.0,
-              right: 16.0,
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+//            margin: EdgeInsets.only(
+//              top: 8.0,
+//              bottom: 8.0,
+//              left: 16.0,
+//              right: 16.0,
+//            ),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  child: FlatButton(
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.grey[300],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                    child: Text(
+                  _currentMonth,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
+                )),
+                Expanded(
+                  child: FlatButton(
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey[300],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              child: _calendarCarousel,
-            ))
-      ],
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text('Mon'),
+                Text('Tue'),
+                Text('Wed'),
+                Text('Thu'),
+                Text('Fri')
+              ],
+            ),
+          ),
+          Divider(
+            thickness: 2.0,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            child: _calendarCarousel,
+          ), //
+        ],
+      ),
     ); //
   }
 }
